@@ -57,6 +57,26 @@
         right: 0;
     }
 
+    .card-body{
+        padding: 2%;
+    }
+
+    .card-inner-row{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-evenly;
+    }
+
+    .favoriteThisText{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-self: center;
+        padding:0;
+    }
+
     /* Topic Adding Zone*/
     .topicAdd{
 

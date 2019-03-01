@@ -58,7 +58,7 @@ const gifTasticFunctions ={ //Defined Page Functions
             const topicBucket = $("<div>");
             const topicBucketTitle = $("<h2>");
             currentTopicClass = selectedTopic + "Bucket";
-            topicBucketTitle.attr("class", "row subBucketTitle").text(selectedTopic + "Gifs");
+            topicBucketTitle.attr("class", "row subBucketTitle").text(selectedTopic + " Gifs");
             currentTopicClass = currentTopicClass.replace(/\s+/g,''); //This function to cut out all whitespace from a string came from Henrik Andersson at Stack Overflow - Source: "https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript"
             currentTopicClass = currentTopicClass.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]+/g,'');
             topicBucket.attr("class", currentTopicClass + " row subBucket").append(topicBucketTitle);
@@ -81,20 +81,23 @@ const gifTasticFunctions ={ //Defined Page Functions
                 originHref = gif.images.original.url;
                 coreHref = originHref.match("/media/(.*).gif");
                 downloadHref = "https://i.giphy.com/media/" + coreHref[1] + ".gif";
+                cardId = gif.id;
                 newGameCard = $("<figure>");
                 cardImg = $("<img>");
                 cardBody = $("<div>");
                 cardTitle = $("<h5>");
                 cardRating = $("<p>");
+                innerRow = $("<div>");
                 downloadBtn = $("<a>");
-                newGameCard.attr("class", "card").attr("style", "width: 18rem").append(cardImg).append(cardBody);
+                favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='far fa-star'></i></h6>")
+                newGameCard.attr("class", "card " + cardId).attr("id", cardId).attr("style", "width: 18rem").append(cardImg).append(cardBody);
                 cardImg.attr("src", stillImg).attr("data-still", stillImg).attr("data-animate", runningImg).attr("data-state", "still").attr("class", "gif");
-                cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(downloadBtn);
-                downloadBtn.attr("download", "").attr("href", downloadHref).attr("class","btn btn-primary downloadBtn").text("Download");
+                cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
+                innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
+                downloadBtn.attr("download", "").attr("href", downloadHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
                 cardRating.attr("class", "card-text").text("Gif Rating: " + rating);
                 cardTitle.attr("class", "card-title").text("Gif Title: " + title);
                 $("." + currentTopicClass).append(newGameCard);
-                console.log($(".gif"));
             });
         });
 
@@ -108,19 +111,16 @@ gifTasticFunctions.populateTopics();
 //Event Capture Functions
 addTopicBtn.click( function() { //What happens when the submit topic button is clicked.
     event.preventDefault();
-    console.log("yo");
+    const newTopic = $("#topicAddField").val();
+    topics.push($("#topicAddField").val());
+    console.log(topics);
+    gifTasticFunctions.populateTopics(); //populate the buttons row with the latest version of the topic array.
 });
 
-$(".addTitle").click( function(event) { //What happens when a topic button is clicked.
-    event.preventDefault();
-    console.log("yo");
-});
-
-$(".topicButton").click( function(event) { //What happens when a topic button is clicked.
+$(document).on("click", ".topicButton", function(event) { //What happens when a topic button is clicked.
     event.preventDefault();
     selectedTopic = $(this).attr("data-title").trim(); //Grab the clicked Topic's data value.
     let currentTopicClass;
-    gifTasticFunctions.populateTopics(); //populate the buttons row with the latest version of the topic array.
     gifTasticFunctions.createTopicBucket(); //create the field where the image cards will be displayed.
     gifTasticFunctions.createVideoGameCard();
 });
@@ -134,6 +134,40 @@ $(document).on("click", ".gif", function() {
     } else {
         $(this).attr("src", $(this).attr("data-still"));
         $(this).attr("data-state", "still");
+    }
+});
+
+$(document).on("click", ".fa-star", function(event) { //What happens when the favorite star is clicked.
+    event.preventDefault();
+    newFavCard = $(this).parent().parent().parent().parent();
+    thisCard = $(newFavCard).attr("class");
+    thisCard = "." + thisCard.replace(/card/g,'').replace(/\s+/g,'').replace(/clone/g,'').replace(/original+/g,'');
+    if($(this).hasClass("far")){
+        $(this).removeClass("far").addClass("fas");
+        let cloneId = "clone"+newFavCard.attr("id")
+        newFavCard.clone().addClass("clone").attr("id", cloneId).appendTo($(".favZone"));
+        newFavCard.addClass("original");
+    } else {
+        if ($(this).hasClass("fas")) {
+            let cloneId = thisCard.replace(/\./g,"clone");
+            $(".card").each(function(){
+                console.log($(this).attr("id"));
+                console.log(cloneId);
+                if ($(this).attr("id") === cloneId){
+                    $("#"+cloneId).remove();
+                } else {
+                    $(thisCard).find("i").removeClass("fas").addClass("far");
+                }
+            });
+            // if ($("<figure>").has(imgClones) && newFavCard.hasClass("clone")){
+            //     newFavCard.remove();
+            // }
+            // if ($("<figure>").has(imgClones) && $("<figure>").hasClass("original")){
+            //     thisCard = imgClones.closest("<figure>");
+            //     console.log(thisCard);
+            //     thisCard.find("div").find("div").find("h6").find("i").removeClass("fas").addClass("far");
+            // }  
+        } 
     }
 });
 
