@@ -1,0 +1,52 @@
+<!--This is my "GifTastic" gif search page for my unit 6 homework.-->
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<!--I'll form the head-->
+<head>
+    <meta charset="UTF-8" lang="en-us">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>It's GifTastic!</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="normalize.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="gifTasticStyle.css">
+</head>
+<body class="container-fluid h-100">
+    <main class="container-fluid h-100">
+        <section class="row nav-row">
+            <!--Navbar-->
+            <nav class="navbar navbar-dark bg-dark">
+                <a class="navbar-brand" href="https://druidan.github.io/index.html">Edward L. Cheever II</a>            
+                    <div class="navDiv">
+                        <ul class="navbar-nav  mr-auto mt-2 mt-lg-0">
+                            <li class="nav-item">
+                                <a class="nav-link" href="https://druidan.github.io/portfolio.html">Exit Game</a>
+                            </li>
+                        </ul>
+                    </div>
+            </nav>
+        </section>
+        <article class="row mainContent">
+            <section class="row topic-row">
+
+            </section>
+            <section class="row display-row">
+                <div class="col-8 gifBucket">
+
+                </div>
+                <div class="col-4 topicAdd">
+                    <form class="row addForm">
+                        <h3 class="row addTitle">Add a Video Game Title!</h3>
+                        <input type="text" class="row" id="topicAddField">
+                        <input type="submit" class="addTopicBtn" value="Submit Topic">
+                    </form>
+                </div>
+            </section>
+        </article>
+    </main>
+    <script type="text/javascript" src="gifTastic.js"></script>
+</body>
+</html>

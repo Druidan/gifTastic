@@ -1,0 +1,77 @@
+/* */
+/* Structure CSS - Adjusting Bootstrap*/
+
+.container-fluid {
+    padding: 0;
+}
+
+.row {
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.nav-row{
+    width: 100%;
+}
+
+.navbar {
+    width: 100%;
+    padding: 0rem 1.5rem;
+}
+
+/* Structure CSS - My Content*/
+
+.mainContent{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+    /* Topic Button Header*/
+    .topic-row{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    /* Giff Container and Cards*/
+    .gifBucket{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .subBucket{
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        justify-content: space-around;
+    }
+
+    .subBucketTitle{
+        justify-content: center;
+        width: 100%;
+        left: 0;
+        right: 0;
+    }
+
+    /* Topic Adding Zone*/
+    .topicAdd{
+
+    }
+    
+    .addForm{
+        display: flex;
+        flex-direction: column;
+        flex-wrap: wrap;
+    }
+
+    .addTitle{
+
+    }
+
+    .addTopicBtn{
+        width: 150px;
+    }
