@@ -1,33 +1,33 @@
 $(document).ready(function(){    //My JS starts past this point.
 
 //Pseudocode and Instruction Notes: 
-// 1 - create a topics Array based on video games theme.
-// 2 - grab the topics in the array...
-// 3 - ...and create buttons in my html (in the topic-row).
-// 4 - When a user clicks a title button...
-// 5 - ...the page makes a call to giphy api...
-// 6 - ...grabs 10 static, non-animated gif images...
-// 7 - ... and appends them to the gifBucket.
-//     7a - Under the gif, display its rating.
-//     challenge 1 - appends each image after a TINY delay...
-//     challenge 2 - ... and makes a quick shuffle sound when it does.
-// 8 - When the user clicks on one of the still images...
-// 9 - ...the gif should animate...
-// 10 - ...and if clicked again, it should stop playing.
-// 11 - Add a form to the page...
-// 12 - ...which takes the value from the user input box...
-// 13 - ...and adds it into the topics array...
-// 14 - ...and then remakes the buttons on the page.
+// 1 - create a topics Array based on video games theme. - (Done)
+// 2 - grab the topics in the array... - (Done)
+// 3 - ...and create buttons in my html (in the topic-row). - (Done)
+// 4 - When a user clicks a title button... - (Done)
+// 5 - ...the page makes a call to giphy api... - (Done)
+// 6 - ...grabs 10 static, non-animated gif images... - (Done)
+// 7 - ... and appends them to the gifBucket. - (Done)
+//     7a - Under the gif, display its rating. - (Done)
+//     challenge 1 - appends each image after a TINY delay... - (Done)
+//     challenge 2 - ... and makes a quick shuffle sound when it does. - (Done)
+// 8 - When the user clicks on one of the still images... - (Done)
+// 9 - ...the gif should animate... - (Done)
+// 10 - ...and if clicked again, it should stop playing. - (Done)
+// 11 - Add a form to the page... - (Done)
+// 12 - ...which takes the value from the user input box... - (Done)
+// 13 - ...and adds it into the topics array... - (Done)
+// 14 - ...and then remakes the buttons on the page. - (Done)
 
 // Additional Goals:
 // 1 - Fully Responsive CSS.
 //     1a - The search bar should probably move to its own row underneath the topic row. 
 //     1b - Maybe stop displaying the title and instead have placeholder text within the form that says the same thing as the title?
-// 2 - Allow Users to request additional gifs to be added to the page and NOT be overwritten.
-// 3 - Display additional information under the gif (title, tags, etc.)
+// 2 - Allow Users to request additional gifs to be added to the page and NOT be overwritten. - (Done)
+// 3 - Display additional information under the gif (title, tags, etc.) - (Done)
 // CHALLENGE GOALS (To do if I acomplish everything else first)
-// 4 - Light Challenge - Allow Users to add their favorite giffs to a favorites section. (which persists through topics).
-// 5 - CHALLENGE - Include a 1-click download button for each gif that works on any device.
+// 4 - Light Challenge - Allow Users to add their favorite giffs to a favorites section. (which persists through topics). - (Done)
+// 5 - CHALLENGE - Include a 1-click download button for each gif that works on any device. - (Halfway Done. Can it be done?)
 // 6 - LARGE CHALLENGE - Store the favorites section in localStorage or cookies so it persists even through page reloads.
 // 7 - PIPE DREAM CHALLENGE - Integrate other APIs into this search. (Maybe see if review aggregator sites have an api for links to reviews from major sites?)
 
@@ -69,35 +69,38 @@ const gifTasticFunctions ={ //Defined Page Functions
     createVideoGameCard : function(){
         const searchTerm = selectedTopic.replace(/\s+/g,'+')
         const queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=nyKGC9XA6dFscyXGENNUex91WkXUqco1&limit=10"
-        let downloadHref;
         $.get(queryURL, function(data){
             response = data.data;
             console.log(response);
-            response.forEach( function(gif){
-                title = gif.title;
-                rating = gif.rating;
-                runningImg = gif.images.fixed_height.url;
-                stillImg = gif.images.fixed_height_still.url;
-                originHref = gif.images.original.url;
-                coreHref = originHref.match("/media/(.*).gif");
-                downloadHref = "https://i.giphy.com/media/" + coreHref[1] + ".gif";
-                cardId = gif.id;
-                newGameCard = $("<figure>");
-                cardImg = $("<img>");
-                cardBody = $("<div>");
-                cardTitle = $("<h5>");
-                cardRating = $("<p>");
-                innerRow = $("<div>");
-                downloadBtn = $("<a>");
-                favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='far fa-star'></i></h6>")
-                newGameCard.attr("class", "card " + cardId).attr("id", cardId).attr("style", "width: 18rem").append(cardImg).append(cardBody);
-                cardImg.attr("src", stillImg).attr("data-still", stillImg).attr("data-animate", runningImg).attr("data-state", "still").attr("class", "gif");
-                cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
-                innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
-                downloadBtn.attr("download", "").attr("href", downloadHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
-                cardRating.attr("class", "card-text").text("Gif Rating: " + rating);
-                cardTitle.attr("class", "card-title").text("Gif Title: " + title);
-                $("." + currentTopicClass).append(newGameCard);
+            response.forEach( function(gif, index){
+                setTimeout( function(){
+                    cardEnterSound = new sound("assets/sounds/soft_thud.mp3");
+                    cardEnterSound.play();
+                    title = gif.title;
+                    rating = gif.rating;
+                    runningImg = gif.images.fixed_height.url;
+                    stillImg = gif.images.fixed_height_still.url;
+                    originHref = gif.images.original.url;
+                    coreHref = originHref.match("/media/(.*).gif");
+                    downloadHref = "https://i.giphy.com/media/" + coreHref[1] + ".gif";
+                    cardId = gif.id;
+                    newGameCard = $("<figure>");
+                    cardImg = $("<img>");
+                    cardBody = $("<div>");
+                    cardTitle = $("<h5>");
+                    cardRating = $("<p>");
+                    innerRow = $("<div>");
+                    downloadBtn = $("<a>");
+                    favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='far fa-star'></i></h6>")
+                    newGameCard.attr("class", "card " + cardId).attr("id", cardId).attr("style", "width: 18rem").append(cardImg).append(cardBody);
+                    cardImg.attr("src", stillImg).attr("data-still", stillImg).attr("data-animate", runningImg).attr("data-state", "still").attr("class", "gif");
+                    cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
+                    innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
+                    downloadBtn.attr("download", "").attr("href", downloadHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
+                    cardRating.attr("class", "card-text").text("Gif Rating: " + rating);
+                    cardTitle.attr("class", "card-title").text("Gif Title: " + title);
+                    $("." + currentTopicClass).append(newGameCard);
+                },100*(index));
             });
         });
 
@@ -158,15 +161,7 @@ $(document).on("click", ".fa-star", function(event) { //What happens when the fa
                 } else {
                     $(thisCard).find("i").removeClass("fas").addClass("far");
                 }
-            });
-            // if ($("<figure>").has(imgClones) && newFavCard.hasClass("clone")){
-            //     newFavCard.remove();
-            // }
-            // if ($("<figure>").has(imgClones) && $("<figure>").hasClass("original")){
-            //     thisCard = imgClones.closest("<figure>");
-            //     console.log(thisCard);
-            //     thisCard.find("div").find("div").find("h6").find("i").removeClass("fas").addClass("far");
-            // }  
+            }); 
         } 
     }
 });
