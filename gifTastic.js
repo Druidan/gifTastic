@@ -68,7 +68,7 @@ const gifTasticFunctions ={ //Defined Page Functions
     },
     createVideoGameCard : function(){
         const searchTerm = selectedTopic.replace(/\s+/g,'+')
-        const queryURL = "http://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=nyKGC9XA6dFscyXGENNUex91WkXUqco1&limit=10"
+        const queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=nyKGC9XA6dFscyXGENNUex91WkXUqco1&limit=10"
         let downloadHref;
         $.get(queryURL, function(data){
             response = data.data;
