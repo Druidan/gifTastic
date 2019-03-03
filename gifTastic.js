@@ -31,7 +31,30 @@ $(document).ready(function(){    //My JS starts past this point.
 // 6 - LARGE CHALLENGE - Store the favorites section in localStorage or cookies so it persists even through page reloads.
 // 7 - PIPE DREAM CHALLENGE - Integrate other APIs into this search. (Maybe see if review aggregator sites have an api for links to reviews from major sites?)
 
-//API Query Creation
+
+//Responsiveness Function
+function moveTopicSubmission(){ //A function to change the placement of the answer image depending on viewport size. 
+    if ($(window).width() < 600) {
+        $(".topicAdd").removeClass("col-4").addClass("col-12").appendTo($(".mainContent")); 
+        $(".gifBucket").removeClass("col-8").addClass("col-12");
+    } else {
+        if ($(window).width() >= 600) {
+            $(".topicAdd").addClass("col-4").removeClass("col-12").appendTo($(".display-row")); 
+            $(".gifBucket").addClass("col-8").removeClass("col-12");
+        }
+    }
+}
+
+moveTopicSubmission();
+
+//Populate stored favorites Function
+function popStoredFavorites(){
+    storedFavs = localStorage.getItem("favZone");
+    console.log(storedFavs);
+    $(".topicAdd").append(storedFavs);
+}
+popStoredFavorites();
+
 
 //Global Variables and Arrays
 const topics = ["Super Mario Bros.", "The Legend of Zelda", "Starfox", "Uncharted", "Crash Bandicoot", "God of War", "Halo: Combat Evolved", "Gears of War", "Mass Effect", "Skyrim", "Portal"];
@@ -154,9 +177,8 @@ $(document).on("click", ".fa-star", function(event) { //What happens when the fa
         if ($(this).hasClass("fas")) {
             let cloneId = thisCard.replace(/\./g,"clone");
             $(".card").each(function(){
-                console.log($(this).attr("id"));
-                console.log(cloneId);
                 if ($(this).attr("id") === cloneId){
+                    console.log(cloneId);
                     $("#"+cloneId).remove();
                 } else {
                     $(thisCard).find("i").removeClass("fas").addClass("far");
@@ -164,11 +186,20 @@ $(document).on("click", ".fa-star", function(event) { //What happens when the fa
             }); 
         } 
     }
+    $(".clone").appendTo($(".favZone"))
+    localStorage.removeItem("favZone");
+    favString = $(".favZone").html();
+    localStorage.setItem("favZone", favString);
 });
 
 $(".downloadBtn").click(function(event) { 
     event.preventDefault();
     window.location.href = $(this).downloadHref;
+});
+
+//Responsiveness Events
+$( window ).resize(function() {
+    moveTopicSubmission();
 });
 
 //Constructors and Prototypes
@@ -192,3 +223,6 @@ function sound(src) {
 });
 
 // rough draft area
+
+// htmlString = $(".card-body").html();
+// console.log(htmlString);
