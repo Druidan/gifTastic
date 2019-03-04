@@ -47,21 +47,29 @@ function moveTopicSubmission(){ //A function to change the placement of the answ
 
 moveTopicSubmission();
 
-//Populate stored favorites Function
-function popStoredFavorites(){
-    storedFavs = localStorage.getItem("favZone");
-    console.log(storedFavs);
-    $(".topicAdd").append(storedFavs);
-}
-popStoredFavorites();
-
-
 //Global Variables, Objects, and Arrays
 const topics = ["Super Mario Bros.", "The Legend of Zelda", "Starfox", "Uncharted", "Crash Bandicoot", "God of War", "Halo: Combat Evolved", "Gears of War", "Mass Effect", "Skyrim", "Portal"];
 const displayedTopics =[];
-const displayedGifs = [];
+let favs = [];
 const addTopicBtn = $(".addTopicBtn");
 let vgCardInfo = {};
+
+function populateFavs() { //A function that takes the favorites from local storage and turns them into cards.
+    favs = localStorage.getItem("favs");
+    favsObject = JSON.parse(favs);
+    console.log(favs);
+    favsObject.forEach()
+    // topics.forEach( function(topic){
+    //     if (!displayedTopics.includes(topic)) {
+    //         const newTopicBtn = $("<button>");
+    //         newTopicBtn.addClass("topicButton");
+    //         newTopicBtn.attr("data-title", topic);
+    //         newTopicBtn.text(topic);
+    //         $(".topic-row").append(newTopicBtn);
+    //         displayedTopics.push(topic);
+
+};
+populateFavs();
 
 const gifTasticFunctions ={ //Defined Page Functions
     populateTopics : function() { //A function that turns the topics into buttons.
@@ -76,20 +84,6 @@ const gifTasticFunctions ={ //Defined Page Functions
             }
         });
     },
-    createTopicBucket : function() {
-        if(!displayedGifs.includes(selectedTopic)){
-            const gifBucket = $(".gifBucket");
-            const topicBucket = $("<div>");
-            const topicBucketTitle = $("<h2>");
-            currentTopicClass = selectedTopic + "Bucket";
-            topicBucketTitle.attr("class", "row subBucketTitle").text(selectedTopic + " Gifs");
-            currentTopicClass = currentTopicClass.replace(/\s+/g,''); //This function to cut out all whitespace from a string came from Henrik Andersson at Stack Overflow - Source: "https://stackoverflow.com/questions/10800355/remove-whitespaces-inside-a-string-in-javascript"
-            currentTopicClass = currentTopicClass.replace(/[.,\/#!$%\^&\*;:{}=\-_`~()]+/g,'');
-            topicBucket.attr("class", currentTopicClass + " row subBucket").append(topicBucketTitle);
-            gifBucket.prepend(topicBucket);
-            displayedGifs.push(selectedTopic);
-        }
-    },
     createTopicObject : function(){
         const searchTerm = selectedTopic.replace(/\s+/g,'+')
         const queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=nyKGC9XA6dFscyXGENNUex91WkXUqco1&limit=10"
@@ -97,7 +91,7 @@ const gifTasticFunctions ={ //Defined Page Functions
             response = data.data;
             response.forEach( function(gif){
                 cardId = gif.id;
-                vgCardPropName = "card"+cardId;
+                vgCardPropName = cardId;
                 gifTitle = gif.title
                 gifRating = gif.rating;
                 gifRunningImg = gif.images.fixed_height.url;
@@ -110,30 +104,20 @@ const gifTasticFunctions ={ //Defined Page Functions
                         rating: gifRating.toString(),
                         runningImg: gifRunningImg.toString(),
                         stillImg: gifStillImg.toString(),
-                        directHref: "https://i.giphy.com/media/" + cardId.toString() + "/giphy.gif",}
+                        directHref: "https://i.giphy.com/media/" + cardId.toString() + "/giphy.gif",
+                        displayed: false}
                 $.extend(vgCardInfo, tempCard);
             });
+            gifTasticFunctions.createVideoGameCard();
         });
-        console.log(vgCardInfo);
     },
     createVideoGameCard : function(){
-        const searchTerm = selectedTopic.replace(/\s+/g,'+')
-        const queryURL = "https://api.giphy.com/v1/gifs/search?q=" + searchTerm + "&api_key=nyKGC9XA6dFscyXGENNUex91WkXUqco1&limit=10"
-        $.get(queryURL, function(data){
-            response = data.data;
-            console.log(response);
-            response.forEach( function(gif, index){
+            for(let card in vgCardInfo){
+                if (vgCardInfo[card].displayed !== true){
                 setTimeout( function(){
+                    vgCardInfo[card].displayed = true;
                     cardEnterSound = new sound("assets/sounds/soft_thud.mp3");
                     cardEnterSound.play();
-                    title = gif.title;
-                    rating = gif.rating;
-                    runningImg = gif.images.fixed_height.url;
-                    stillImg = gif.images.fixed_height_still.url;
-                    originHref = gif.images.original.url;
-                    coreHref = originHref.match("/media/(.*).gif");
-                    downloadHref = "https://i.giphy.com/media/" + coreHref[1] + ".gif";
-                    cardId = gif.id;
                     newGameCard = $("<figure>");
                     cardImg = $("<img>");
                     cardBody = $("<div>");
@@ -142,18 +126,17 @@ const gifTasticFunctions ={ //Defined Page Functions
                     innerRow = $("<div>");
                     downloadBtn = $("<a>");
                     favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='far fa-star'></i></h6>")
-                    newGameCard.attr("class", "card " + cardId).attr("id", cardId).attr("style", "width: 18rem").append(cardImg).append(cardBody);
-                    cardImg.attr("src", stillImg).attr("data-still", stillImg).attr("data-animate", runningImg).attr("data-state", "still").attr("class", "gif");
+                    newGameCard.attr("class", "card " + vgCardInfo[card].id).attr("id", vgCardInfo[card].id).attr("style", "width: 18rem").append(cardImg).append(cardBody);
+                    cardImg.attr("src", vgCardInfo[card].stillImg).attr("data-still", vgCardInfo[card].stillImg).attr("data-animate", vgCardInfo[card].runningImg).attr("data-state", "still").attr("class", "gif");
                     cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
                     innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
-                    downloadBtn.attr("download", "").attr("href", downloadHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
-                    cardRating.attr("class", "card-text").text("Gif Rating: " + rating);
-                    cardTitle.attr("class", "card-title").text("Gif Title: " + title);
-                    $("." + currentTopicClass).append(newGameCard);
-                },100*(index));
-            });
-        });
-
+                    downloadBtn.attr("download", "").attr("href", vgCardInfo[card].directHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
+                    cardRating.attr("class", "card-text").text("Gif Rating: " + vgCardInfo[card].rating);
+                    cardTitle.attr("class", "card-title").text("Gif Title: " + vgCardInfo[card].title);
+                    $(".gifBucket").append(newGameCard);
+                },100);
+            };
+        };
     },
 };//End of Defined Page Functions
 
@@ -173,10 +156,7 @@ addTopicBtn.click( function() { //What happens when the submit topic button is c
 $(document).on("click", ".topicButton", function(event) { //What happens when a topic button is clicked.
     event.preventDefault();
     selectedTopic = $(this).attr("data-title").trim(); //Grab the clicked Topic's data value.
-    let currentTopicClass;
-    gifTasticFunctions.createTopicBucket(); //create the field where the image cards will be displayed.
-    gifTasticFunctions.createTopicObject()
-    gifTasticFunctions.createVideoGameCard();
+    gifTasticFunctions.createTopicObject();
 });
 
 //This event and how its delegated was solved by Arun P Johny on Stack Overflow - Source: "https://stackoverflow.com/questions/16893043/jquery-click-event-not-working-after-adding-class"
@@ -194,30 +174,33 @@ $(document).on("click", ".gif", function() {
 $(document).on("click", ".fa-star", function(event) { //What happens when the favorite star is clicked.
     event.preventDefault();
     newFavCard = $(this).parent().parent().parent().parent();
-    thisCard = $(newFavCard).attr("class");
-    thisCard = "." + thisCard.replace(/card/g,'').replace(/\s+/g,'').replace(/clone/g,'').replace(/original+/g,'');
+    favId = $(newFavCard).attr("id")
+    thisCard = favId.replace(/clone/g,"");
+    cloneId = "clone"+thisCard;
     if($(this).hasClass("far")){
+        if(!favs.includes(vgCardInfo[thisCard])){
+            favs.push(vgCardInfo[thisCard]);
+            stringedFavs = JSON.stringify(favs);
+            localStorage.setItem("favs", stringedFavs);
+        }
+        console.log(favs);
         $(this).removeClass("far").addClass("fas");
-        let cloneId = "clone"+newFavCard.attr("id")
         newFavCard.clone().addClass("clone").attr("id", cloneId).appendTo($(".favZone"));
         newFavCard.addClass("original");
     } else {
         if ($(this).hasClass("fas")) {
-            let cloneId = thisCard.replace(/\./g,"clone");
+            favs.splice(vgCardInfo[thisCard], 1);
+            console.log(favs);
+            localStorage.setItem("favs", favs);
             $(".card").each(function(){
                 if ($(this).attr("id") === cloneId){
-                    console.log(cloneId);
                     $("#"+cloneId).remove();
                 } else {
-                    $(thisCard).find("i").removeClass("fas").addClass("far");
+                    $("#"+thisCard).find("i").removeClass("fas").addClass("far");
                 }
             }); 
         } 
     }
-    $(".clone").appendTo($(".favZone"))
-    localStorage.removeItem("favZone");
-    favString = $(".favZone").html();
-    localStorage.setItem("favZone", favString);
 });
 
 $(".downloadBtn").click(function(event) { 
