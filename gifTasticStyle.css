@@ -42,23 +42,9 @@
     /* Giff Container and Cards*/
     .gifBucket{
         display: flex;
-        flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: space-around;
-    }
-
-    .subBucket{
-        display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-around;
-    }
-
-    .subBucketTitle{
-        justify-content: center;
-        width: 100%;
-        left: 0;
-        right: 0;
     }
 
     .card{

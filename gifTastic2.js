@@ -34,7 +34,7 @@ $(document).ready(function(){    //My JS starts past this point.
 
 //Responsiveness Function
 function moveTopicSubmission(){ //A function to change the placement of the answer image depending on viewport size. 
-    if ($(window).width() < 600) {
+    if ($(window).width() < 600) { //When the window is smaller than 600px, change the column sizes of various buckets and move the favorites to above the gif bucket.
         $(".topicAdd").removeClass("col-4").addClass("col-12").appendTo($(".mainContent")); 
         $(".gifBucket").removeClass("col-8").addClass("col-12");
     } else {
@@ -57,17 +57,25 @@ let vgCardInfo = {};
 function populateFavs() { //A function that takes the favorites from local storage and turns them into cards.
     favs = localStorage.getItem("favs");
     favsObject = JSON.parse(favs);
-    console.log(favs);
-    favsObject.forEach()
-    // topics.forEach( function(topic){
-    //     if (!displayedTopics.includes(topic)) {
-    //         const newTopicBtn = $("<button>");
-    //         newTopicBtn.addClass("topicButton");
-    //         newTopicBtn.attr("data-title", topic);
-    //         newTopicBtn.text(topic);
-    //         $(".topic-row").append(newTopicBtn);
-    //         displayedTopics.push(topic);
-
+    $(".favZone").empty();
+    favsObject.forEach( function(i){
+        newGameCard = $("<figure>");
+        cardImg = $("<img>");
+        cardBody = $("<div>");
+        cardTitle = $("<h5>");
+        cardRating = $("<p>");
+        innerRow = $("<div>");
+        downloadBtn = $("<a>");
+        favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='fas fa-star'></i></h6>")
+        newGameCard.attr("class", "card " + i.id).attr("id", i.id).attr("style", "width: 18rem").append(cardImg).append(cardBody);
+        cardImg.attr("src", i.stillImg).attr("data-still", i.stillImg).attr("data-animate", i.runningImg).attr("data-state", "still").attr("class", "gif");
+        cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
+        innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
+        downloadBtn.attr("download", "").attr("href", i.directHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
+        cardRating.attr("class", "card-text").text("Gif Rating: " + i.rating);
+        cardTitle.attr("class", "card-title").text("Gif Title: " + i.title);
+        $(".favZone").append(newGameCard);
+    });
 };
 populateFavs();
 
@@ -189,9 +197,18 @@ $(document).on("click", ".fa-star", function(event) { //What happens when the fa
         newFavCard.addClass("original");
     } else {
         if ($(this).hasClass("fas")) {
-            favs.splice(vgCardInfo[thisCard], 1);
             console.log(favs);
-            localStorage.setItem("favs", favs);
+            console.log(thisCard);
+            const removeFavI = favs.indexOf(function(obj){
+                return obj.id === thisCard;
+            });
+            console.log(removeFavI);
+            // const removeFavI = favs.indexOf(thisCard);
+            favs.splice(removeFavI, 1);
+            //favs.splice(vgCardInfo[thisCard], 1);
+            console.log(favs);
+            stringedFavs = JSON.stringify(favs);
+            localStorage.setItem("favs", stringedFavs);
             $(".card").each(function(){
                 if ($(this).attr("id") === cloneId){
                     $("#"+cloneId).remove();
@@ -234,6 +251,3 @@ function sound(src) {
 });
 
 // rough draft area
-
-// htmlString = $(".card-body").html();
-// console.log(htmlString);
