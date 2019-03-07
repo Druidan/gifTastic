@@ -35,12 +35,12 @@ $(document).ready(function(){    //My JS starts past this point.
 //Responsiveness Function
 function moveTopicSubmission(){ //A function to change the placement of the answer image depending on viewport size. 
     if ($(window).width() < 600) { //When the window is smaller than 600px, change the column sizes of various buckets and move the favorites to above the gif bucket.
-        $(".topicAdd").removeClass("col-4").addClass("col-12").appendTo($(".mainContent")); 
-        $(".gifBucket").removeClass("col-8").addClass("col-12");
+        $(".topicAdd").addClass("col-12").prependTo($(".gifBucket")); 
+        $(".gifBucket").addClass("col-12");
     } else {
         if ($(window).width() >= 600) {
-            $(".topicAdd").addClass("col-4").removeClass("col-12").appendTo($(".display-row")); 
-            $(".gifBucket").addClass("col-8").removeClass("col-12");
+            $(".topicAdd").removeClass("col-12").appendTo($(".display-row")); 
+            $(".gifBucket").removeClass("col-12");
         }
     }
 }

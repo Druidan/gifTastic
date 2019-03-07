@@ -47,10 +47,11 @@
         flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-around;
+        max-width:65%;
     }
 
     .card{
-        margin: 1.5%;
+        margin: 1.5% auto;
         background-color: transparent;
         border: solid teal 3px; 
     }
@@ -80,30 +81,34 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
+        min-width:32%;
+        margin-left: auto;
+        margin-right: 2%;
+        right: 0;
     }
 
     .favZone{
         display: flex;
         flex-direction: column;
         flex-wrap: nowrap;
-        justify-content: center;
-        align-content: center;
+        justify-items: space-around;
     }
     
     .addForm{
         display: flex;
         flex-direction: column;
-        flex-wrap: wrap;
-        justify-content: center;
+        flex-wrap: nowrap;
+        justify-content: space-around;
         align-content: center;
     }
 
     .addTitle{
         text-align: center;
-        justify-self: center;
     }
 
     .addTopicBtn{
+        display: flex;
         width: 150px;
-        justify-self: center;
+        justify-content: space-around;
+        margin: 1% auto;
     }
