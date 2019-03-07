@@ -55,9 +55,8 @@ const addTopicBtn = $(".addTopicBtn");
 let vgCardInfo = {};
 
 function populateFavs() { //A function that takes the favorites from local storage and turns them into cards.
-    if (favs !== null){
+    if (localStorage.getItem("favs") !== null){
         favs = JSON.parse(localStorage.getItem("favs"));
-        console.log(favs);
         $(".favZone").empty();
         favs.forEach( function(i){
             i = JSON.parse(i);
@@ -78,6 +77,8 @@ function populateFavs() { //A function that takes the favorites from local stora
             cardTitle.attr("class", "card-title").text("Gif Title: " + i.title);
             $(".favZone").append(newGameCard);
         });
+    } else {
+        console.log(false);
     }
 };
 populateFavs();
