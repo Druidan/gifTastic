@@ -55,27 +55,30 @@ const addTopicBtn = $(".addTopicBtn");
 let vgCardInfo = {};
 
 function populateFavs() { //A function that takes the favorites from local storage and turns them into cards.
-    favs = localStorage.getItem("favs");
-    favsObject = JSON.parse(favs);
-    $(".favZone").empty();
-    favsObject.forEach( function(i){
-        newGameCard = $("<figure>");
-        cardImg = $("<img>");
-        cardBody = $("<div>");
-        cardTitle = $("<h5>");
-        cardRating = $("<p>");
-        innerRow = $("<div>");
-        downloadBtn = $("<a>");
-        favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='fas fa-star'></i></h6>")
-        newGameCard.attr("class", "card " + i.id).attr("id", i.id).attr("style", "width: 18rem").append(cardImg).append(cardBody);
-        cardImg.attr("src", i.stillImg).attr("data-still", i.stillImg).attr("data-animate", i.runningImg).attr("data-state", "still").attr("class", "gif");
-        cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
-        innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
-        downloadBtn.attr("download", "").attr("href", i.directHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
-        cardRating.attr("class", "card-text").text("Gif Rating: " + i.rating);
-        cardTitle.attr("class", "card-title").text("Gif Title: " + i.title);
-        $(".favZone").append(newGameCard);
-    });
+    if (favs !== null){
+        favs = JSON.parse(localStorage.getItem("favs"));
+        console.log(favs);
+        $(".favZone").empty();
+        favs.forEach( function(i){
+            i = JSON.parse(i);
+            newGameCard = $("<figure>");
+            cardImg = $("<img>");
+            cardBody = $("<div>");
+            cardTitle = $("<h5>");
+            cardRating = $("<p>");
+            innerRow = $("<div>");
+            downloadBtn = $("<a>");
+            favoriteBtn = $("<h6 class='col-6 favoriteThisText'>Favorite This:&nbsp;&nbsp;<i class='fas fa-star'></i></h6>")
+            newGameCard.attr("class", "card " + i.id).attr("id", i.id).attr("style", "width: 18rem").append(cardImg).append(cardBody);
+            cardImg.attr("src", i.stillImg).attr("data-still", i.stillImg).attr("data-animate", i.runningImg).attr("data-state", "still").attr("class", "gif");
+            cardBody.attr("class", "card-body").append(cardTitle).append(cardRating).append(innerRow);
+            innerRow.attr("class", "row card-inner-row").append(downloadBtn).append(favoriteBtn);
+            downloadBtn.attr("download", "").attr("href", i.directHref).attr("class","col-6 btn btn-primary downloadBtn").text("Download");
+            cardRating.attr("class", "card-text").text("Gif Rating: " + i.rating);
+            cardTitle.attr("class", "card-title").text("Gif Title: " + i.title);
+            $(".favZone").append(newGameCard);
+        });
+    }
 };
 populateFavs();
 
@@ -157,7 +160,6 @@ addTopicBtn.click( function() { //What happens when the submit topic button is c
     event.preventDefault();
     const newTopic = $("#topicAddField").val();
     topics.push($("#topicAddField").val());
-    console.log(topics);
     gifTasticFunctions.populateTopics(); //populate the buttons row with the latest version of the topic array.
 });
 
@@ -187,26 +189,21 @@ $(document).on("click", ".fa-star", function(event) { //What happens when the fa
     cloneId = "clone"+thisCard;
     if($(this).hasClass("far")){
         if(!favs.includes(vgCardInfo[thisCard])){
-            favs.push(vgCardInfo[thisCard]);
+            favs.push(JSON.stringify(vgCardInfo[thisCard]));
             stringedFavs = JSON.stringify(favs);
             localStorage.setItem("favs", stringedFavs);
         }
-        console.log(favs);
         $(this).removeClass("far").addClass("fas");
         newFavCard.clone().addClass("clone").attr("id", cloneId).appendTo($(".favZone"));
         newFavCard.addClass("original");
     } else {
         if ($(this).hasClass("fas")) {
-            console.log(favs);
-            console.log(thisCard);
             const removeFavI = favs.indexOf(function(obj){
                 return obj.id === thisCard;
             });
-            console.log(removeFavI);
             // const removeFavI = favs.indexOf(thisCard);
             favs.splice(removeFavI, 1);
             //favs.splice(vgCardInfo[thisCard], 1);
-            console.log(favs);
             stringedFavs = JSON.stringify(favs);
             localStorage.setItem("favs", stringedFavs);
             $(".card").each(function(){
