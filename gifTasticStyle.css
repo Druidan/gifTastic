@@ -29,7 +29,6 @@ body {
     display: flex;
     flex-direction: column;
     flex-wrap: nowrap;
-    overflow: visible;
     color: whitesmoke;
 }
 
@@ -42,7 +41,17 @@ body {
     }
 
     .topicButton{
+        background-color: transparent;
+        color: whitesmoke;
+        border: 2px solid teal;
+        border-radius: 10px;
         margin: 1%;
+    }
+    
+    .topicButton:hover{
+        outline: none;
+        border-color: #9ecaed;
+        box-shadow: 0 0 10px #9ecaed;
     }
 
     .display-row {
@@ -50,23 +59,31 @@ body {
         flex-direction: row;
         flex-wrap: nowrap;
         justify-content: space-around;
+        padding: 0 1rem;
         margin-top: 1.5rem;
     }
 
     /* Giff Container and Cards*/
     .gifBucket{
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         flex-wrap: wrap;
         justify-content: space-around;
         text-align: center;
-        min-width: 50%;
+        min-width: 45%;
     }
 
     .card{
         margin: 1.5% auto;
         background-color: transparent;
         border: solid teal 3px; 
+    }
+
+    .card-title{
+        background: rgb(61, 61, 61);
+        border-radius: 5px;
+        text-align: center;
+        padding: 1% 1% 5%;
     }
 
     .card-body{
@@ -89,12 +106,18 @@ body {
         padding:0;
     }
 
+    .fa-star {
+        color: yellow;
+    }
+
     /* Topic Adding Zone*/
     .topicAdd{
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        margin: 1rem auto auto;
+        padding: 0 1rem 0 0;
+        min-width: 290px;
+        margin: 1rem auto;
     }
 
     .favZone{
@@ -120,5 +143,15 @@ body {
         display: flex;
         width: 150px;
         justify-content: space-around;
+        background-color: transparent;
+        color: whitesmoke;
+        border: 2px solid teal;
+        border-radius: 10px;
         margin: 1rem auto;
+    }
+
+    .addTopicBtn:hover{
+        outline: none;
+        border-color: #9ecaed;
+        box-shadow: 0 0 10px #9ecaed;
     }

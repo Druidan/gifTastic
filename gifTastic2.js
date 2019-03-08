@@ -126,7 +126,6 @@ const gifTasticFunctions ={ //Defined Page Functions
     createVideoGameCard : function(){
             for(let card in vgCardInfo){
                 if (vgCardInfo[card].displayed !== true){
-                setTimeout( function(){
                     vgCardInfo[card].displayed = true;
                     cardEnterSound = new sound("assets/sounds/soft_thud.mp3");
                     cardEnterSound.play();
@@ -146,8 +145,7 @@ const gifTasticFunctions ={ //Defined Page Functions
                     cardRating.attr("class", "card-text").text("Gif Rating: " + vgCardInfo[card].rating);
                     cardTitle.attr("class", "card-title").text("Gif Title: " + vgCardInfo[card].title);
                     $(".gifBucket").append(newGameCard);
-                },100);
-            };
+                };
         };
     },
 };//End of Defined Page Functions
