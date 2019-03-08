@@ -1,6 +1,10 @@
 /* */
 /* Structure CSS - Adjusting Bootstrap*/
 
+body {
+    background: rgb(15, 15, 15);
+}
+
 .container-fluid {
     padding: 0;
 }
@@ -24,8 +28,8 @@
 .mainContent{
     display: flex;
     flex-direction: column;
-    flex-wrap: wrap;
-    background: rgb(15, 15, 15);
+    flex-wrap: nowrap;
+    overflow: visible;
     color: whitesmoke;
 }
 
@@ -41,13 +45,22 @@
         margin: 1%;
     }
 
+    .display-row {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: space-around;
+        margin-top: 1.5rem;
+    }
+
     /* Giff Container and Cards*/
     .gifBucket{
         display: flex;
-        flex-direction: row;
+        flex-direction: column;
         flex-wrap: wrap;
         justify-content: space-around;
-        max-width:65%;
+        text-align: center;
+        min-width: 50%;
     }
 
     .card{
@@ -81,10 +94,7 @@
         display: flex;
         flex-direction: column;
         flex-wrap: wrap;
-        min-width:32%;
-        margin-left: auto;
-        margin-right: 2%;
-        right: 0;
+        margin: 1rem auto auto;
     }
 
     .favZone{
@@ -110,5 +120,5 @@
         display: flex;
         width: 150px;
         justify-content: space-around;
-        margin: 1% auto;
+        margin: 1rem auto;
     }

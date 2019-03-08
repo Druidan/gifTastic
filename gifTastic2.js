@@ -207,13 +207,15 @@ $(document).on("click", ".fa-star", function(event) { //What happens when the fa
             //favs.splice(vgCardInfo[thisCard], 1);
             stringedFavs = JSON.stringify(favs);
             localStorage.setItem("favs", stringedFavs);
-            $(".card").each(function(){
-                if ($(this).attr("id") === cloneId){
-                    $("#"+cloneId).remove();
-                } else {
-                    $("#"+thisCard).find("i").removeClass("fas").addClass("far");
-                }
-            }); 
+            $(".favZone").empty();
+            populateFavs();
+            // $(".card").each(function(){
+            //     if ($(this).attr("id") === cloneId){
+            //         $("#"+cloneId).remove();
+            //     } else {
+            //         $("#"+thisCard).find("i").removeClass("fas").addClass("far");
+            //     }
+            // }); 
         } 
     }
 });
